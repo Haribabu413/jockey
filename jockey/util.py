@@ -45,10 +45,15 @@ class TestSequence:
 
         return results
 
+    def reset(self):
+        self.sequence_index = 0
+
 if __name__ == '__main__':
-    # direct callback injection at initialization
+    # direct callback injection at initialization, run twice
     callbacks = [lambda: print('1'), lambda: print('2'), lambda: print('3')]
     ts = TestSequence(callbacks)
+    ts.run_sequence()
+    ts.reset()
     ts.run_sequence()
 
     # callbacks with args at initialization
