@@ -9,10 +9,10 @@ class Application(tk.Frame):
         self.header_frame = HeaderFrame(self, title=title)
         self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
 
-        self.input_frame = UserLabelFrame(self, text='Input')
+        self.input_frame = InputLabelFrame(self)
         self.input_frame.grid(row=1, column=0, sticky='news')
 
-        self.output_frame = UserLabelFrame(self, text='Output')
+        self.output_frame = OutputLabelFrame(self)
         self.output_frame.grid(row=1, column=1, sticky='news')
 
     def add_input_label(self, text, index: int=None):
@@ -48,13 +48,30 @@ class UserLabelFrame(tk.LabelFrame):
         self.widgets = list()
 
     def add_widget(self, widget: tk.Widget, index: int=None):
-        self.widgets.append(widget)
-        widget.pack()
+        if index is None:
+            self.widgets.append(widget)
+        else:
+            self.widgets.insert(index, widget)
+
+        for widget in self.widgets:
+            widget.pack_forget()
+            widget.pack()
 
     def add_label(self, text, index: int=None):
         label = tk.Label(self, text=text)
-        self.add_widget(label)
+        self.add_widget(label, index=index)
 
+
+class InputLabelFrame(UserLabelFrame):
+    def __init__(self, parent):
+        self.parent = parent
+        UserLabelFrame.__init__(self, self.parent, text='Input')
+
+
+class OutputLabelFrame(UserLabelFrame):
+    def __init__(self, parent):
+        self.parent = parent
+        UserLabelFrame.__init__(self, self.parent, text='Output')
 
 
 if __name__ == '__main__':
@@ -65,5 +82,10 @@ if __name__ == '__main__':
 
     for i in range(3):
         app.add_input_label(text='input {}'.format(i))
+
+    for i in range(4):
+        app.add_output_label(text='output {}'.format(i))
+
+    app.add_output_label('inserted output', 1)
 
     root.mainloop()
