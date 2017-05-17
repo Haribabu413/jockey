@@ -31,8 +31,12 @@ class TestSequence:
         self.args.append(args)
 
     def run_test(self):
-        test_function = self.sequence[self.sequence_index]
-        test_args = self.args[self.sequence_index]
+        try:
+            test_function = self.sequence[self.sequence_index]
+            test_args = self.args[self.sequence_index]
+        except IndexError:
+            print('!!! test needs to be reset !!!')
+            return None
 
         if test_args is not None:
             results = test_function(*test_args)

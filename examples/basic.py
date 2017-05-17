@@ -3,10 +3,15 @@ DO NOT CHANGE THE IMPORT
 """
 from jockey import *
 
+app = Application(title=('Jockey Application', 'v0.0.0'))
+
 
 def setup():
     """
-    This is the test setup code and should only contain instances of 'add_user_data'
+    This is the test setup code.  Any code entered here should be intended to execute one time
+    at application instantiation.  As such, you should only set power supplies, daqs, etc, into
+    their initial state.  Since we are not manipulating the GUI, hardware manipulations should
+    not pass the 'app' argument within this function
 
     :return: None
     """
@@ -15,11 +20,12 @@ def setup():
 
 def test():
     """
-    This is the main body of the test and should contain all of the executable code.
+    This is the main body of the test and should contain all of the executable code.  All manipulations
+    within this body should pass the 'app' parameter in order to be properly added to the test queue.
 
     :return: None
     """
-    write_daq_ao(1.25, 'ai0')
+    write_daq_ao(1.25, 'ai0', app=app)
 
 
 def teardown():
@@ -29,16 +35,21 @@ def teardown():
 
     :return: None
     """
-    print('teardown')
+    write_daq_ao(0, 'ai0')
+
+
+def custom_function():
+    """
+    You can create your own custom functions and execute them as part of the test sequence
+
+    :return:
+    """
+    pass
 
 '''
 ---------------------------
 DO NOT MESS BELOW THIS LINE
 '''
 if __name__ == '__main__':
-    app = Application(
-        title=('Jockey Application', 'v0.0.0'),
-        setup_callback=setup,
-        test_callback=test,
-        teardown_callback=teardown
-    )
+    app.register_tests(setup, test, teardown)
+    app.run()
