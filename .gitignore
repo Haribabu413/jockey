@@ -1,0 +1,6 @@
+*.idea/
+*.cache/
+subdue.egg-info/
+*__pycache__/
+build/
+dist/
