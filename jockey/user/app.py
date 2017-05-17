@@ -4,20 +4,24 @@ from jockey.util import TestSequence
 
 
 class Application:
-    def __init__(self, title: (tuple, str)=None):
+    def __init__(self, title: (tuple, str)=None,
+                 setup_callback=None, test_callback=None, teardown_callback=None):
+        # initialize the test sequences
+        self.test_sequence = TestSequence()
+
+        # executing these should register the tests with the test sequences
+        setup_callback()
+        test_callback()
+        teardown_callback()
+
+        # start the GUI
         self.root = tk.Tk()
 
         # allow the GUI to stretch
-        root_rows = 2
-        root_columns = 2
-
-        for x in range(root_columns):
-            tk.Grid.columnconfigure(self.root, x, weight=1)
-
-        for y in range(root_rows):
-            tk.Grid.rowconfigure(self.root, y, weight=1)
-
-        self.test_sequence = TestSequence()
+        tk.Grid.columnconfigure(self.root, 0, weight=1)
+        tk.Grid.columnconfigure(self.root, 1, weight=1)
+        tk.Grid.rowconfigure(self.root, 0, weight=1)
+        tk.Grid.rowconfigure(self.root, 1, weight=1)
 
         # create the base GUI frame elements
         self.header_frame = HeaderFrame(self.root, title=title)
@@ -34,6 +38,7 @@ class Application:
 
     def sleep(self, time, callback):
         print('sleeping for {}ms'.format(time))
+
         self.root.after(time, callback)
 
     def add_input_label(self, text, index: int=None):

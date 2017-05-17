@@ -19,7 +19,7 @@ def test():
 
     :return: None
     """
-    print('test')
+    write_daq_ao(1.25, 'ai0')
 
 
 def teardown():
@@ -36,6 +36,9 @@ def teardown():
 DO NOT MESS BELOW THIS LINE
 '''
 if __name__ == '__main__':
-    register_test(setup, test, teardown)
-    start_runner()
-    app = Application(title=('Jockey Application', 'v0.0.0'))
+    app = Application(
+        title=('Jockey Application', 'v0.0.0'),
+        setup_callback=setup,
+        test_callback=test,
+        teardown_callback=teardown
+    )

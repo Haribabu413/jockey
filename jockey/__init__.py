@@ -1,2 +1,2 @@
-from jockey.user.util import *
-from jockey.user.app import *
+from jockey.user.app import Application
+from jockey.user.hardware import *
