@@ -68,6 +68,12 @@ class InputLabelFrame(UserLabelFrame):
             widget.pack_forget()
             widget.pack(fill='x')
 
+    def enable(self):
+        self.start_button['state'] = 'normal'
+
+    def disable(self):
+        self.start_button['state'] = 'disabled'
+
 
 class OutputLabelFrame(UserLabelFrame):
     def __init__(self, parent):

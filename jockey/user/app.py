@@ -22,7 +22,7 @@ class Application:
         self.header_frame = HeaderFrame(self.root, title=title)
         self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
 
-        self.input_frame = InputLabelFrame(self.root, start_command=self.run_test)
+        self.input_frame = InputLabelFrame(self.root, start_command=self.start_btn_pressed)
         self.input_frame.grid(row=1, column=0, sticky='news')
 
         self.output_frame = OutputLabelFrame(self.root)
@@ -45,10 +45,13 @@ class Application:
     def add_test(self, callback, args):
         self.test_sequence.add_test(callback, args)
 
-    def run_test(self):
-        if self.test_sequence.ready:
-            self.test_sequence.reset()
+    def start_btn_pressed(self):
+        self.input_frame.disable()
 
+        # allow time for the button to disable before beginning the test sequence
+        self.root.after(150, self.run_test)
+
+    def run_test(self):
         self.test_sequence.run_test()
 
         # continue adding the next test sequence for
@@ -58,6 +61,7 @@ class Application:
         else:
             self.teardown()
             self.test_sequence.reset()
+            self.input_frame.enable()
 
     def add_input_label(self, text, index: int=None):
         self.input_frame.add_label(text, index)
