@@ -27,7 +27,7 @@ def _get_daq_hardware(daq_string):
     return daq
 
 
-def append_limits(result_dict, min_value, max_value, pass_if):
+def _append_limits(result_dict, min_value, max_value, pass_if):
     if min_value is not None:
         result_dict['min_value'] = min_value
 
@@ -70,7 +70,7 @@ def read_daq(input, num_of_points=1, sample_rate=1000,
     line = port_str + pin_str
 
     result = {'save': save, 'save_column_header': save_column_header, 'device': input}
-    append_limits(result, min_value, max_value, pass_if)
+    _append_limits(result, min_value, max_value, pass_if)
 
     if 'ai' in line:
         samples = daq.sample_analog_in(line, sample_count=num_of_points, rate=sample_rate)

@@ -3,7 +3,7 @@ DO NOT CHANGE THE IMPORT
 """
 from jockey import *
 
-app = Application(title=('Jockey Application', 'v0.0.0'))
+app = Application(title=('Jockey Application', 'v0.0.0'), save_path='save.csv')
 
 
 def setup():
@@ -27,7 +27,7 @@ def test():
     """
     write_daq('Dev2/ao/0', voltage=1.25, app=app)
     read_daq('Dev2/ai/0', max_value=1, app=app)
-    read_daq('Dev2/port0/line1', pass_if=True, app=app)
+    read_daq('Dev2/port0/line1', pass_if=True, app=app, save_column_header='port0/line1')
 
 
 def teardown():

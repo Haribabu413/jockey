@@ -4,10 +4,11 @@ from jockey.util import TestSequence
 
 
 class Application:
-    def __init__(self, title: (tuple, str)=None):
+    def __init__(self, title: (tuple, str), save_path: str):
         # initialize the test sequences
         self.test_sequence = TestSequence()
         self.teardown = None
+        self.save_path = save_path
 
         # start the GUI
         self.root = tk.Tk()
@@ -52,7 +53,11 @@ class Application:
         self.root.after(150, self.run_test)
 
     def run_test(self):
-        self.test_sequence.run_test()
+        result = self.test_sequence.run_test()
+        if result.get('save_column_header') is not None:
+            self.add_output_label(result.get('save_column_header'))
+            self.add_output_label(result.get('value'))
+        # todo: display results in output
 
         # continue adding the next test sequence for
         # as long as the test is not completed
@@ -60,10 +65,12 @@ class Application:
             self.root.after(100, self.run_test)
         else:
             self.teardown()
-            print(self.test_sequence.results)
-
+            self.process_results(self.test_sequence.results)
             self.test_sequence.reset()
             self.input_frame.enable()
+
+    def process_results(self, results):
+        pass
 
     def add_input_label(self, text, index: int=None):
         self.input_frame.add_label(text, index)
