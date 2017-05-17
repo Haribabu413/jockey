@@ -13,6 +13,19 @@ class TestSequence:
 
         self.sequence_index = 0
 
+    @property
+    def ready(self):
+        if self.sequence_index == 0:
+            return True
+        else:
+            return False
+
+    def complete(self):
+        if self.sequence_index >= len(self.sequence):
+            return True
+        else:
+            return False
+
     def add_test(self, test, args: tuple=None):
         self.sequence.append(test)
         self.args.append(args)
@@ -28,25 +41,20 @@ class TestSequence:
 
         self.sequence_index += 1
 
-        if self.sequence_index >= len(self.sequence):
-            raise IndexError
-
         return results
 
     def run_sequence(self):
         results = list()
 
-        while True:
-            try:
-                result = self.run_test()
-                results.append(result)
-            except IndexError:
-                break
+        while not self.complete():
+            result = self.run_test()
+            results.append(result)
 
         return results
 
     def reset(self):
         self.sequence_index = 0
+
 
 if __name__ == '__main__':
     # direct callback injection at initialization, run twice
