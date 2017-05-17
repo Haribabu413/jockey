@@ -55,17 +55,39 @@ class UserLabelFrame(tk.LabelFrame):
 
         for widget in self.widgets:
             widget.pack_forget()
-            widget.pack()
+            widget.pack(fill='x')
 
     def add_label(self, text, index: int=None):
         label = tk.Label(self, text=text)
         self.add_widget(label, index=index)
 
+    def add_button(self, text, command=None, index: int=None):
+        button = tk.Button(self, text=text, command=command)
+        self.add_widget(button, index)
+
 
 class InputLabelFrame(UserLabelFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, start_command=None, abort_command=None):
         self.parent = parent
         UserLabelFrame.__init__(self, self.parent, text='Input')
+
+        self.abort_button = tk.Button(self, text='Abort', command=abort_command)
+        self.add_widget(self.abort_button)
+
+        self.start_button = tk.Button(self, text='Start', command=start_command)
+        self.add_widget(self.start_button)
+
+    def add_widget(self, widget: tk.Widget, index: int=None):
+        # modify the index so that the start and abort
+        # buttons are always at the end of the list
+        if index is None:
+            self.widgets.insert(-2, widget)
+        else:
+            self.widgets.insert(index, widget)
+
+        for widget in self.widgets:
+            widget.pack_forget()
+            widget.pack(fill='x')
 
 
 class OutputLabelFrame(UserLabelFrame):
@@ -81,7 +103,7 @@ if __name__ == '__main__':
     app.grid()
 
     for i in range(3):
-        app.add_input_label(text='input {}'.format(i))
+        app.add_input_label(text='input {}------------'.format(i))
 
     for i in range(4):
         app.add_output_label(text='output {}'.format(i))
