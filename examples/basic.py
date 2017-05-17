@@ -26,7 +26,7 @@ def test():
 
     :return: None
     """
-    write_daq_ao(1.25, 'ai0', app=app)
+    write_daq('Dev2/ao/0', voltage=1.25, app=app)
 
 
 def teardown():
@@ -36,7 +36,7 @@ def teardown():
 
     :return: None
     """
-    write_daq_ao(0, 'ai0')
+    write_daq('Dev2/ao/0', 0)
 
 
 def custom_function():
