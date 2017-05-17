@@ -7,13 +7,19 @@ class Application(tk.Frame):
         tk.Frame.__init__(self, self.parent)
 
         self.header_frame = HeaderFrame(self, title=title)
-        self.header_frame.grid(row=0, column=0, columnspan=2)
+        self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
 
-        self.input_frame = InputFrame(self)
-        self.input_frame.grid(row=1, column=0)
+        self.input_frame = UserLabelFrame(self, text='Input')
+        self.input_frame.grid(row=1, column=0, sticky='news')
 
-        self.input_frame = OutputFrame(self)
-        self.input_frame.grid(row=1, column=1)
+        self.output_frame = UserLabelFrame(self, text='Output')
+        self.output_frame.grid(row=1, column=1, sticky='news')
+
+    def add_input_label(self, text, index: int=None):
+        self.input_frame.add_label(text, index)
+
+    def add_output_label(self, text, index: int=None):
+        self.output_frame.add_label(text, index)
 
 
 class HeaderFrame(tk.Frame):
@@ -34,26 +40,30 @@ class HeaderFrame(tk.Frame):
         # todo: implement logo
 
 
-class InputFrame(tk.LabelFrame):
-    def __init__(self, parent):
+class UserLabelFrame(tk.LabelFrame):
+    def __init__(self, parent, text):
         self.parent = parent
-        tk.LabelFrame.__init__(self, self.parent, text='Input')
+        tk.LabelFrame.__init__(self, self.parent, text=text)
 
-        self.label = tk.Label(self, text='some text')
-        self.label.grid()
+        self.widgets = list()
+
+    def add_widget(self, widget: tk.Widget, index: int=None):
+        self.widgets.append(widget)
+        widget.pack()
+
+    def add_label(self, text, index: int=None):
+        label = tk.Label(self, text=text)
+        self.add_widget(label)
 
 
-class OutputFrame(tk.LabelFrame):
-    def __init__(self, parent):
-        self.parent = parent
-        tk.LabelFrame.__init__(self, self.parent, text='Output')
-
-        self.label = tk.Label(self, text='some text')
-        self.label.grid()
 
 if __name__ == '__main__':
     root = tk.Tk()
 
-    Application(root, title=('Application', 'v0.0.1')).grid()
+    app = Application(root, title=('Application', 'v0.0.1'))
+    app.grid()
+
+    for i in range(3):
+        app.add_input_label(text='input {}'.format(i))
 
     root.mainloop()
