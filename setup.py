@@ -4,8 +4,7 @@ from setuptools import setup, find_packages
 
 
 requirements = [
-    "subdue >= 0.1.6",
-    "requests >= 2.14.2"
+    "subdue >= 0.1.6"
 ]
 
 with open('readme.md', 'r') as f:

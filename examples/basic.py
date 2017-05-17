@@ -38,5 +38,4 @@ DO NOT MESS BELOW THIS LINE
 if __name__ == '__main__':
     register_test(setup, test, teardown)
     start_runner()
-
-
+    app = Application(title=('Jockey Application', 'v0.0.0'))
