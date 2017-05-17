@@ -1,9 +1,9 @@
 import jockey.hardware
 
 
-def write_daq(output, voltage=None, state=None, save=False, save_column_header=None, override=False, app=None):
+def write_daq(output, voltage=None, state=None, save=False, save_column_header=None, app=None):
     callback = jockey.hardware.write_daq
-    args = (output, voltage, state, save, save_column_header, override)
+    args = (output, voltage, state, save, save_column_header)
 
     if app is None:
         callback(*args)

@@ -60,6 +60,8 @@ class Application:
             self.root.after(100, self.run_test)
         else:
             self.teardown()
+            print(self.test_sequence.results)
+
             self.test_sequence.reset()
             self.input_frame.enable()
 

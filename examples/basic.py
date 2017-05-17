@@ -2,7 +2,6 @@
 DO NOT CHANGE THE IMPORT
 """
 from jockey import *
-import time
 
 app = Application(title=('Jockey Application', 'v0.0.0'))
 
@@ -16,7 +15,7 @@ def setup():
 
     :return: None
     """
-    print('setup')
+    write_daq('Dev2/ao/0', 0)
 
 
 def test():
@@ -27,6 +26,8 @@ def test():
     :return: None
     """
     write_daq('Dev2/ao/0', voltage=1.25, app=app)
+    read_daq('Dev2/ai/0', max_value=1, app=app)
+    read_daq('Dev2/port0/line1', pass_if=True, app=app)
 
 
 def teardown():

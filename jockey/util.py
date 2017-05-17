@@ -1,3 +1,20 @@
+
+def apply_limits(value, min_value: float=None, max_value: float=None, pass_if: bool=None):
+    if min_value:
+        if value < min_value:
+            return False
+
+    if max_value:
+        if value > max_value:
+            return False
+
+    if pass_if:
+        if value != pass_if:
+            return False
+
+    return True
+
+
 class TestSequence:
     def __init__(self, sequence: list=None, args: list=None):
         if sequence is not None and args is not None:
@@ -5,6 +22,7 @@ class TestSequence:
                 raise ValueError('the test sequence and args lists must be of the same length')
 
         self.sequence = sequence if sequence is not None else list()
+        self.results = list()
 
         if args is None:
             self.args = [None] * len(self.sequence)  # fill args with 'None' of same length as sequence
@@ -20,6 +38,7 @@ class TestSequence:
         else:
             return False
 
+    @property
     def complete(self):
         if self.sequence_index >= len(self.sequence):
             return True
@@ -42,6 +61,7 @@ class TestSequence:
             results = test_function(*test_args)
         else:
             results = test_function()
+        self.results.append(results)
 
         self.sequence_index += 1
 
@@ -58,6 +78,7 @@ class TestSequence:
 
     def reset(self):
         self.sequence_index = 0
+        self.results = list()
 
 
 if __name__ == '__main__':
