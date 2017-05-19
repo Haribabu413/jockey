@@ -48,6 +48,7 @@ class Application:
 
     def start_btn_pressed(self):
         self.input_frame.disable()
+        self.clear_output()
 
         # allow time for the button to disable before beginning the test sequence
         self.root.after(150, self.run_test)
@@ -77,6 +78,9 @@ class Application:
 
     def add_output_label(self, text, index: int=None):
         self.output_frame.add_label(text, index)
+
+    def clear_output(self):
+        self.output_frame.clear()
 
 if __name__ == '__main__':
     Application(title=('Application', 'v0.0.1'))

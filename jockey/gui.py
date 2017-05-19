@@ -44,6 +44,13 @@ class UserLabelFrame(tk.LabelFrame):
         button = tk.Button(self, text=text, command=command)
         self.add_widget(button, index)
 
+    def clear(self):
+        for widget in self.widgets:
+            widget.pack_forget()
+            widget.destroy()
+
+        self.widgets = list()
+
 
 class InputLabelFrame(UserLabelFrame):
     def __init__(self, parent, start_command=None, abort_command=None):
