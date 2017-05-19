@@ -26,7 +26,7 @@ def test():
     :return: None
     """
     write_daq(device='Dev1', output='ao/0', voltage=1.25, app=app)
-    wait(5, app=app)
+    wait(1, app=app)
     read_daq(device='Dev1', input='ai/0', max_value=1, app=app)
     read_daq(device='Dev1', input='port0/line1', pass_if=True, save_column_header='port0/line1', app=app)
 

@@ -11,7 +11,6 @@ class Application:
         self.test_sequence = TestSequence()
         self.teardown = None
         self.save_path = save_path
-        self.sleep_timer = 0
 
         # start the GUI
         self.root = tk.Tk()
@@ -58,20 +57,19 @@ class Application:
         self.root.after(150, self.run_test)
 
     def run_test(self):
-        if self.sleep_timer == 0:
-            result = self.test_sequence.run_test()
-            if result.get('save_column_header') is not None:
-                self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
+        result = self.test_sequence.run_test()
+        if result.get('save_column_header') is not None:
+            self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
 
-            # continue adding the next test sequence for
-            # as long as the test is not completed
-            if not self.test_sequence.complete:
-                self.root.after(100, self.run_test)
-            else:
-                self.teardown()
-                self.process_results(self.test_sequence.results)
-                self.test_sequence.reset()
-                self.input_frame.enable()
+        # continue adding the next test sequence for
+        # as long as the test is not completed
+        if not self.test_sequence.complete:
+            self.root.after(100, self.run_test)
+        else:
+            self.teardown()
+            self.process_results(self.test_sequence.results)
+            self.test_sequence.reset()
+            self.input_frame.enable()
 
     def process_results(self, results):
         pass
