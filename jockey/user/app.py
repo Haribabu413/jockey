@@ -1,4 +1,6 @@
 import tkinter as tk
+import time
+
 from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame
 from jockey.util import TestSequence
 
@@ -9,6 +11,7 @@ class Application:
         self.test_sequence = TestSequence()
         self.teardown = None
         self.save_path = save_path
+        self.sleep_timer = 0
 
         # start the GUI
         self.root = tk.Tk()
@@ -55,19 +58,20 @@ class Application:
         self.root.after(150, self.run_test)
 
     def run_test(self):
-        result = self.test_sequence.run_test()
-        if result.get('save_column_header') is not None:
-            self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
+        if self.sleep_timer == 0:
+            result = self.test_sequence.run_test()
+            if result.get('save_column_header') is not None:
+                self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
 
-        # continue adding the next test sequence for
-        # as long as the test is not completed
-        if not self.test_sequence.complete:
-            self.root.after(100, self.run_test)
-        else:
-            self.teardown()
-            self.process_results(self.test_sequence.results)
-            self.test_sequence.reset()
-            self.input_frame.enable()
+            # continue adding the next test sequence for
+            # as long as the test is not completed
+            if not self.test_sequence.complete:
+                self.root.after(100, self.run_test)
+            else:
+                self.teardown()
+                self.process_results(self.test_sequence.results)
+                self.test_sequence.reset()
+                self.input_frame.enable()
 
     def process_results(self, results):
         pass
@@ -77,6 +81,22 @@ class Application:
 
     def add_output_label(self, text, index: int=None):
         self.output_frame.add_label(text, index)
+
+
+def _wait(sleep_time):
+    time.sleep(sleep_time)
+    return {}
+
+
+def wait(sleep_time, app=None):
+    callback = _wait
+    args = (sleep_time, )
+
+    if app is None:
+        callback(*args)
+    else:
+        app.add_test(callback, args)
+
 
 if __name__ == '__main__':
     Application(title=('Application', 'v0.0.1'))
