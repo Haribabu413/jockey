@@ -19,7 +19,8 @@ def setup():
 
     app.add_input_label('my text')
     add_input_label('more text', app=app)
-    app.add_user_inputs(['serial number'])
+
+    app.add_user_inputs(['serial number', 'one', 'two'])
 
 
 def test():

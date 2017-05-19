@@ -1,5 +1,6 @@
 import tkinter as tk
 import time
+from collections import OrderedDict
 
 from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame
 from jockey.util import TestSequence
@@ -82,9 +83,9 @@ class Application:
             else:
                 self.teardown()
                 self.process_results()
+                self.input_frame.clear_entries()
                 self.test_sequence.reset()
                 self.input_frame.enable()
-                self.input_frame.clear_entries()
         else:
             self.teardown()
             self.input_frame.enable()
@@ -105,6 +106,14 @@ class Application:
     def process_results(self):
         user_inputs = self.input_frame.get_user_inputs()
         test_results = self.test_sequence.results
+
+        data = OrderedDict()
+
+        # collect the user inputs and the test results into a single uniform dictionary
+        header_list = [user_input for user_input in user_inputs.keys()]
+        header_list.sort()
+        print('header_list: ', header_list)
+
 
         print('user_inputs: ', user_inputs)
         print('test_results: ', test_results)

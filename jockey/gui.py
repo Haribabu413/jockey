@@ -89,6 +89,10 @@ class InputLabelFrame(UserLabelFrame):
         self.start_button['state'] = 'disabled'
 
     def add_entries(self, entries):
+        if self.inputs is not None:
+            print('warning: there is already one instance of key: value entries in the input frame')
+            return
+
         self.inputs = tk_tools.KeyValueEntry(self, keys=entries)
         self.add_widget(self.inputs)
 
@@ -132,13 +136,9 @@ class OutputLabelFrame(UserLabelFrame):
 if __name__ == '__main__':
     root = tk.Tk()
 
-    olf = OutputLabelFrame(root)
-    olf.grid()
+    ilf = InputLabelFrame(root)
+    ilf.grid()
 
-    olf.create_table()
-    olf.add_to_table('one', 'two')
-    olf.add_to_table('one', 'two')
-    olf.add_to_table('one', 'two')
-    olf.add_to_table('one', 'two')
+    ilf.add_entries(['serial number', 'fun with cats', 'something else'])
 
     root.mainloop()

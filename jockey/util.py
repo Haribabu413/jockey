@@ -81,6 +81,14 @@ class TestSequence:
         self.results = list()
 
 
+def save(file_path, format='txt', delimiter='\t'):
+    valid_formats = ['txt']
+    if format not in valid_formats:
+        raise ValueError('invalid format, "{}"'.format)
+
+
+
+
 if __name__ == '__main__':
     # direct callback injection at initialization, run twice
     callbacks = [lambda: print('1'), lambda: print('2'), lambda: print('3')]
