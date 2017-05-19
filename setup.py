@@ -22,9 +22,6 @@ setup(
     license='MIT',
     keywords='test labview visa instrument hardware',
     packages=find_packages(),
-    entry_points={'console_scripts': [
-      'subdue = subdue.__main__:main']
-    },
     include_package_data=True,
     install_requires=requirements,
     zip_safe=False
