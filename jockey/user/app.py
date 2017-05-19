@@ -28,6 +28,7 @@ class Application:
 
         self.output_frame = OutputLabelFrame(self.root)
         self.output_frame.grid(row=1, column=1, sticky='news')
+        self.output_frame.create_table()
 
     def __del__(self):
         if self.teardown is not None:
@@ -48,7 +49,7 @@ class Application:
 
     def start_btn_pressed(self):
         self.input_frame.disable()
-        self.clear_output()
+        self.output_frame.clear()
 
         # allow time for the button to disable before beginning the test sequence
         self.root.after(150, self.run_test)
@@ -56,9 +57,7 @@ class Application:
     def run_test(self):
         result = self.test_sequence.run_test()
         if result.get('save_column_header') is not None:
-            self.add_output_label(result.get('save_column_header'))
-            self.add_output_label(result.get('value'))
-        # todo: display results in output
+            self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
 
         # continue adding the next test sequence for
         # as long as the test is not completed
@@ -78,9 +77,6 @@ class Application:
 
     def add_output_label(self, text, index: int=None):
         self.output_frame.add_label(text, index)
-
-    def clear_output(self):
-        self.output_frame.clear()
 
 if __name__ == '__main__':
     Application(title=('Application', 'v0.0.1'))

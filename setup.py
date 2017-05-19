@@ -4,7 +4,8 @@ from setuptools import setup, find_packages
 
 
 requirements = [
-    "subdue >= 0.1.6"
+    "subdue >= 0.1.6",
+    "tk_tools"
 ]
 
 with open('readme.md', 'r') as f:

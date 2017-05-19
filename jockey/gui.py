@@ -1,4 +1,5 @@
 import tkinter as tk
+import tk_tools
 
 
 class HeaderFrame(tk.Frame):
@@ -87,5 +88,41 @@ class OutputLabelFrame(UserLabelFrame):
         self.parent = parent
         UserLabelFrame.__init__(self, self.parent, text='Output')
 
+    def create_table(self, headers=None):
+        table = tk_tools.LabelGrid(self, 2, headers=headers)
+        self.add_widget(table)
+
+    def add_to_table(self, label, value):
+        table = None
+        for e in self.widgets:
+            if isinstance(e, tk_tools.LabelGrid):
+                table = e
+                break
+
+        if table is not None:
+            table.add_row([label, value])
+
+    def clear(self):
+        for widget in self.widgets:
+            if not isinstance(widget, tk_tools.LabelGrid):
+                widget.pack_forget()
+                widget.destroy()
+            else:
+                widget.clear()
+
+        self.widgets = [w for w in self.widgets if isinstance(w, tk_tools.LabelGrid)]
 
 
+if __name__ == '__main__':
+    root = tk.Tk()
+
+    olf = OutputLabelFrame(root)
+    olf.grid()
+
+    olf.create_table()
+    olf.add_to_table('one', 'two')
+    olf.add_to_table('one', 'two')
+    olf.add_to_table('one', 'two')
+    olf.add_to_table('one', 'two')
+
+    root.mainloop()
