@@ -11,6 +11,7 @@ class Application:
         self.test_sequence = TestSequence()
         self.teardown = None
         self.save_path = save_path
+        self.aborted = False
 
         # start the GUI
         self.root = tk.Tk()
@@ -25,7 +26,7 @@ class Application:
         self.header_frame = HeaderFrame(self.root, title=title)
         self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
 
-        self.input_frame = InputLabelFrame(self.root, start_command=self.start_btn_pressed)
+        self.input_frame = InputLabelFrame(self.root, start_command=self.start_btn_pressed, abort_command=self.abort_btn_pressed)
         self.input_frame.grid(row=1, column=0, sticky='news')
 
         self.output_frame = OutputLabelFrame(self.root)
@@ -50,26 +51,50 @@ class Application:
         self.test_sequence.add_test(callback, args)
 
     def start_btn_pressed(self):
+        print('-------------')
+        self.test_sequence.reset()
         self.input_frame.disable()
         self.output_frame.clear()
+        self.aborted = False
 
         # allow time for the button to disable before beginning the test sequence
         self.root.after(150, self.run_test)
 
-    def run_test(self):
-        result = self.test_sequence.run_test()
-        if result.get('save_column_header') is not None:
-            self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
+    def abort_btn_pressed(self):
+        print('!!! ABORTED !!!')
+        self.aborted = True
 
-        # continue adding the next test sequence for
-        # as long as the test is not completed
-        if not self.test_sequence.complete:
-            self.root.after(100, self.run_test)
+    def run_test(self):
+        if not self.aborted:
+            result = self.test_sequence.run_test()
+            if result.get('save_column_header') is not None:
+                self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
+
+            # continue adding the next test sequence for
+            # as long as the test is not completed
+            if not self.test_sequence.complete:
+                self.root.after(100, self.run_test)
+            else:
+                self.teardown()
+                self.process_results(self.test_sequence.results)
+                self.test_sequence.reset()
+                self.input_frame.enable()
         else:
             self.teardown()
-            self.process_results(self.test_sequence.results)
-            self.test_sequence.reset()
             self.input_frame.enable()
+
+    def wait(self, wait_time):
+        increment = 0.1
+        total = 0.0
+        while total < wait_time:
+            time.sleep(increment)
+            total += increment
+            self.root.update()
+
+            if self.aborted:
+                break
+
+        return {}
 
     def process_results(self, results):
         pass
@@ -81,14 +106,9 @@ class Application:
         self.output_frame.add_label(text, index)
 
 
-def _wait(sleep_time):
-    time.sleep(sleep_time)
-    return {}
-
-
-def wait(sleep_time, app=None):
-    callback = _wait
-    args = (sleep_time, )
+def wait(wait_time, app=None):
+    callback = app.wait
+    args = (wait_time,)
 
     if app is None:
         callback(*args)
