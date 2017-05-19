@@ -1,0 +1,11 @@
+setup.py
+jockey/__init__.py
+jockey/gui.py
+jockey/iface.py
+jockey.egg-info/PKG-INFO
+jockey.egg-info/SOURCES.txt
+jockey.egg-info/dependency_links.txt
+jockey.egg-info/entry_points.txt
+jockey.egg-info/not-zip-safe
+jockey.egg-info/requires.txt
+jockey.egg-info/top_level.txt

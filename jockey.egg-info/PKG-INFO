@@ -1,0 +1,12 @@
+Metadata-Version: 1.0
+Name: jockey
+Version: 0.0.1
+Summary: Easy creation of hardware-oriented tests
+Home-page: https://github.com/slightlynybbled/subdue
+Author: Jason R. Jones
+Author-email: slightlynybbled@gmail.com
+License: MIT
+Description: Not ready.  Don't even try it.
+        
+Keywords: test labview visa instrument hardware
+Platform: UNKNOWN

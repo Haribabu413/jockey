@@ -106,15 +106,5 @@ class Application:
         self.output_frame.add_label(text, index)
 
 
-def wait(wait_time, app=None):
-    callback = app.wait
-    args = (wait_time,)
-
-    if app is None:
-        callback(*args)
-    else:
-        app.add_test(callback, args)
-
-
 if __name__ == '__main__':
     Application(title=('Application', 'v0.0.1'))
