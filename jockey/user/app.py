@@ -26,7 +26,8 @@ class Application:
         self.header_frame = HeaderFrame(self.root, title=title)
         self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
 
-        self.input_frame = InputLabelFrame(self.root, start_command=self.start_btn_pressed, abort_command=self.abort_btn_pressed)
+        self.input_frame = InputLabelFrame(self.root,
+                                           start_command=self.start_btn_pressed, abort_command=self.abort_btn_pressed)
         self.input_frame.grid(row=1, column=0, sticky='news')
 
         self.output_frame = OutputLabelFrame(self.root)
@@ -52,6 +53,10 @@ class Application:
 
     def start_btn_pressed(self):
         print('-------------')
+        if not self.user_inputs_filled:
+            print('user inputs not filled out')
+            return
+
         self.test_sequence.reset()
         self.input_frame.disable()
         self.output_frame.clear()
@@ -76,7 +81,7 @@ class Application:
                 self.root.after(100, self.run_test)
             else:
                 self.teardown()
-                self.process_results(self.test_sequence.results)
+                self.process_results()
                 self.test_sequence.reset()
                 self.input_frame.enable()
         else:
@@ -96,11 +101,27 @@ class Application:
 
         return {}
 
-    def process_results(self, results):
-        pass
+    def process_results(self):
+        user_inputs = self.input_frame.get_user_inputs()
+        test_results = self.test_sequence.results
+
+        print('user_inputs: ', user_inputs)
+        print('test_results: ', test_results)
 
     def add_input_label(self, text, index: int=None):
         self.input_frame.add_label(text, index)
+
+    def add_user_inputs(self, input_labels: list):
+        self.input_frame.add_entries(input_labels)
+
+    @property
+    def user_inputs_filled(self):
+        filled = True
+        for key, value in self.input_frame.get_user_inputs().items():
+            if value is '':
+                filled = False
+                break
+        return filled
 
     def add_output_label(self, text, index: int=None):
         self.output_frame.add_label(text, index)

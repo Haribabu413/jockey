@@ -54,7 +54,7 @@ class UserLabelFrame(tk.LabelFrame):
 
 
 class InputLabelFrame(UserLabelFrame):
-    def __init__(self, parent, start_command=None, abort_command=None):
+    def __init__(self, parent, start_command=None, abort_command=None, entries: list=None):
         self.parent = parent
         UserLabelFrame.__init__(self, self.parent, text='Input')
 
@@ -63,6 +63,12 @@ class InputLabelFrame(UserLabelFrame):
 
         self.start_button = tk.Button(self, text='Start', command=start_command)
         self.add_widget(self.start_button)
+
+        if entries is not None:
+            self.inputs = tk_tools.KeyValueEntry(self, keys=entries)
+            self.add_widget(self.inputs)
+        else:
+            self.inputs = None
 
     def add_widget(self, widget: tk.Widget, index: int=None):
         # modify the index so that the start and abort
@@ -81,6 +87,13 @@ class InputLabelFrame(UserLabelFrame):
 
     def disable(self):
         self.start_button['state'] = 'disabled'
+
+    def add_entries(self, entries):
+        self.inputs = tk_tools.KeyValueEntry(self, keys=entries)
+        self.add_widget(self.inputs)
+
+    def get_user_inputs(self):
+        return self.inputs.get() if self.inputs is not None else None
 
 
 class OutputLabelFrame(UserLabelFrame):

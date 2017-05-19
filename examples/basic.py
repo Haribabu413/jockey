@@ -16,7 +16,10 @@ def setup():
     :return: None
     """
     write_daq(device='Dev1', output='ao/0', voltage=0)
+
     app.add_input_label('my text')
+    add_input_label('more text', app=app)
+    app.add_user_inputs(['serial number'])
 
 
 def test():
