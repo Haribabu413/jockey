@@ -70,7 +70,7 @@ class TestSequence:
     def run_sequence(self):
         results = list()
 
-        while not self.complete():
+        while not self.complete:
             result = self.run_test()
             results.append(result)
 
