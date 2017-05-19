@@ -84,6 +84,7 @@ class Application:
                 self.process_results()
                 self.test_sequence.reset()
                 self.input_frame.enable()
+                self.input_frame.clear_entries()
         else:
             self.teardown()
             self.input_frame.enable()

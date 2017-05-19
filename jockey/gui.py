@@ -95,6 +95,9 @@ class InputLabelFrame(UserLabelFrame):
     def get_user_inputs(self):
         return self.inputs.get() if self.inputs is not None else None
 
+    def clear_entries(self):
+        self.inputs.reset()
+
 
 class OutputLabelFrame(UserLabelFrame):
     def __init__(self, parent):
