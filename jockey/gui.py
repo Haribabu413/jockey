@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 import datetime
 import tk_tools
 
@@ -59,10 +60,11 @@ class InputLabelFrame(UserLabelFrame):
         self.parent = parent
         UserLabelFrame.__init__(self, self.parent, text='Input')
 
-        self.abort_button = tk.Button(self, text='Abort', command=abort_command)
+        btn_font = ('Courier New', 14, 'bold')
+        self.abort_button = tk.Button(self, text='Abort', command=abort_command, foreground='red', font=btn_font)
         self.add_widget(self.abort_button)
 
-        self.start_button = tk.Button(self, text='Start', command=start_command)
+        self.start_button = tk.Button(self, text='Start', command=start_command, foreground='green', font=btn_font)
         self.add_widget(self.start_button)
 
         if entries is not None:
@@ -149,6 +151,7 @@ class StatusBar(tk.Frame):
         self.datetime_label.pack(side='left', expand=True, fill=tk.X)
 
         self.default_fg_color = self.status_label.cget('foreground')
+        self.default_bg_color = self.status_label.cget('background')
 
     def executing(self, text: str):
         self.executing_label['text'] = text
@@ -156,10 +159,19 @@ class StatusBar(tk.Frame):
     def status(self, text: str):
         if text.lower() in ['fail', 'f']:
             self.status_label['foreground'] = 'red'
+            self.status_label['background'] = self.default_bg_color
+
         elif text.lower() in ['pass', 'p']:
             self.status_label['foreground'] = 'green'
+            self.status_label['background'] = self.default_bg_color
+
+        elif text.lower() in ['pending', 'testing', 'test']:
+            self.status_label['foreground'] = 'black'
+            self.status_label['background'] = 'yellow'
+
         else:
             self.status_label['foreground'] = self.default_fg_color
+            self.status_label['background'] = self.default_bg_color
 
         self.status_label['text'] = text
 

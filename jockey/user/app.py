@@ -64,7 +64,7 @@ class Application:
 
         self.status_bar.datetime()
         self.status_bar.executing('Running test sequence')
-        self.status_bar.status('Pass')
+        self.status_bar.status('Pending')
 
         self.test_sequence.reset()
         self.input_frame.disable()
