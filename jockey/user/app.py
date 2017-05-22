@@ -3,11 +3,11 @@ import time
 from collections import OrderedDict
 
 from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame
-from jockey.util import TestSequence
+from jockey.util import TestSequence, save
 
 
 class Application:
-    def __init__(self, title: (tuple, str), save_path: str):
+    def __init__(self, title: (tuple, str), save_path: str='results.txt'):
         # initialize the test sequences
         self.test_sequence = TestSequence()
         self.teardown = None
@@ -112,11 +112,22 @@ class Application:
         # collect the user inputs and the test results into a single uniform dictionary
         header_list = [user_input for user_input in user_inputs.keys()]
         header_list.sort()
-        print('header_list: ', header_list)
+        for header in header_list:
+            data[header] = user_inputs[header]
 
+        test_passed = True
+        for result in test_results:
+            if result.get('save') is True:
+                header = result.get('save_column_header')
+                value = result.get('value')
+                data[header] = value
 
-        print('user_inputs: ', user_inputs)
-        print('test_results: ', test_results)
+            if result.get('pass') is False:
+                test_passed = False
+
+        data['pass'] = test_passed
+
+        save(data, self.save_path)
 
     def add_input_label(self, text, index: int=None):
         self.input_frame.add_label(text, index)

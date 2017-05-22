@@ -70,7 +70,7 @@ def read_daq(input, device=None, serial_number=None, model=None,
              num_of_points=1, sample_rate=1000,
              min_value=None, max_value=None, pass_if=None,
              save=False, save_column_header=None):
-    print('reading from {}: {}'.format(device, input))
+
     daq_str, port_str, pin_str = _parse_daq_string(input)
 
     daq = _get_daq_hardware(device, serial_number, model)
@@ -91,6 +91,7 @@ def read_daq(input, device=None, serial_number=None, model=None,
         value = daq.digital_in_line(port_str, pin_str)
         result['value'] = value
         result['pass'] = apply_limits(result['value'], min_value, max_value, pass_if)
+
     else:
         raise ValueError('incorrect "input" parameter')
 

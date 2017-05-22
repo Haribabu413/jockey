@@ -3,6 +3,7 @@ DO NOT CHANGE THE IMPORT
 """
 from jockey import *
 
+# creates an instance of the Application
 app = Application(title=('Jockey Application', 'v0.0.0'), save_path='save.csv')
 
 
@@ -18,9 +19,9 @@ def setup():
     write_daq(device='Dev1', output='ao/0', voltage=0)
 
     app.add_input_label('my text')
-    add_input_label('more text', app=app)
+    app.add_input_label('more text')
 
-    app.add_user_inputs(['serial number', 'one', 'two'])
+    app.add_user_inputs(['serial number'])
 
 
 def test():
@@ -31,13 +32,10 @@ def test():
     :return: None
     """
     write_daq(device='Dev1', output='ao/0', voltage=1.25, app=app)
-    wait(2, app=app)
-    read_daq(device='Dev1', input='ai/0', max_value=1, app=app)
-    read_daq(device='Dev1', input='port0/line1', pass_if=True, save_column_header='port0/line1', app=app)
-    read_daq(device='Dev1', input='port0/line2', pass_if=True, save_column_header='port0/line2', app=app)
-    read_daq(device='Dev1', input='port0/line3', pass_if=True, save_column_header='port0/line3', app=app)
-    read_daq(device='Dev1', input='port0/line4', pass_if=True, save_column_header='port0/line4', app=app)
-    read_daq(device='Dev1', input='port0/line5', pass_if=True, save_column_header='port0/line5', app=app)
+    wait(0.5, app=app)
+    read_daq(device='Dev1', input='ai/0', max_value=2, app=app)
+    read_daq(device='Dev1', input='port0/line2', pass_if=False, save=True, save_column_header='port0/line2', app=app)
+    read_daq(device='Dev1', input='port0/line4', pass_if=False, save=True, save_column_header='port0/line4', app=app)
 
 
 def teardown():

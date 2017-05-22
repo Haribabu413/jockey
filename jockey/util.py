@@ -81,12 +81,25 @@ class TestSequence:
         self.results = list()
 
 
-def save(file_path, format='txt', delimiter='\t'):
-    valid_formats = ['txt']
-    if format not in valid_formats:
-        raise ValueError('invalid format, "{}"'.format)
+def save(data: dict, file_path: str, delimiter='\t'):
+    header = delimiter.join(data.keys()) + '\n'
 
+    # determine if the header is present and - if not - then print a new header in the file
+    header_present = False
+    try:
+        with open(file_path, 'r') as f:
+            if header in f.read():
+                header_present = True
+    except FileNotFoundError:
+        pass
 
+    # append the data to the data file
+    with open(file_path, 'a') as f:
+        if not header_present:
+            f.write(header)
+
+        data = delimiter.join([str(v) for _, v in data.items()]) + '\n'
+        f.write(data)
 
 
 if __name__ == '__main__':
