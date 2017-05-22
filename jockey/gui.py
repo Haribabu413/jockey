@@ -118,10 +118,10 @@ class OutputLabelFrame(UserLabelFrame):
         UserLabelFrame.__init__(self, self.parent, text='Output')
 
     def create_table(self, headers=None):
-        table = tk_tools.LabelGrid(self, 2, headers=headers)
+        table = tk_tools.LabelGrid(self, 3, headers=headers)
         self.add_widget(table)
 
-    def add_to_table(self, label, value):
+    def add_to_table(self, label, value, status):
         table = None
         for e in self.widgets:
             if isinstance(e, tk_tools.LabelGrid):
@@ -129,7 +129,7 @@ class OutputLabelFrame(UserLabelFrame):
                 break
 
         if table is not None:
-            table.add_row([label, value])
+            table.add_row([label, value, status])
 
     def clear(self):
         for widget in self.widgets:

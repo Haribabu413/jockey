@@ -16,12 +16,12 @@ def setup():
 
     :return: None
     """
-    write_daq(device='Dev1', output='ao/0', voltage=0)
+    write_daq(device='Dev1', output='ao/0', voltage=0)  # set an initial condition
 
-    app.add_input_label('my text')
-    app.add_input_label('more text')
+    app.add_input_label('my text')  # this is how you might add custom labeling to the inputs
+    app.add_input_label('more text')  # another customer label
 
-    app.add_user_inputs(['serial number'])
+    app.add_user_inputs(['serial number'])  # this is how you would add user input values
 
 
 def test():

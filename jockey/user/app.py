@@ -82,7 +82,10 @@ class Application:
         if not self.aborted:
             result = self.test_sequence.run_test()
             if result.get('save_column_header') is not None:
-                self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
+                status = 'pass' if result.get('pass') else 'fail'
+                self.output_frame.add_to_table(result.get('save_column_header'),
+                                               result.get('value'),
+                                               status)
             if result.get('pass') is False:
                 self.status_bar.status('Fail')
 
@@ -119,7 +122,10 @@ class Application:
         user_inputs = self.input_frame.get_user_inputs()
         test_results = self.test_sequence.results
 
+        dt_str = self.status_bar.datetime()
+
         data = OrderedDict()
+        data['datetime'] = dt_str
 
         # collect the user inputs and the test results into a single uniform dictionary
         header_list = [user_input for user_input in user_inputs.keys()]
