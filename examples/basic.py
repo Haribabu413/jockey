@@ -34,7 +34,7 @@ def test():
     write_daq(device='Dev1', output='ao/0', voltage=1.25, app=app)
     wait(0.5, app=app)
     read_daq(device='Dev1', input='ai/0', max_value=2, app=app)
-    read_daq(device='Dev1', input='port0/line2', pass_if=False, save=True, save_column_header='port0/line2', app=app)
+    read_daq(device='Dev1', input='port0/line2', pass_if=True, save=True, save_column_header='port0/line2', app=app)
     read_daq(device='Dev1', input='port0/line4', pass_if=False, save=True, save_column_header='port0/line4', app=app)
 
 

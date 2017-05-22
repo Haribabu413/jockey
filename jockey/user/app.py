@@ -2,7 +2,7 @@ import tkinter as tk
 import time
 from collections import OrderedDict
 
-from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame
+from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
 from jockey.util import TestSequence, save
 
 
@@ -28,12 +28,16 @@ class Application:
         self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
 
         self.input_frame = InputLabelFrame(self.root,
-                                           start_command=self.start_btn_pressed, abort_command=self.abort_btn_pressed)
+                                           start_command=self.start_btn_pressed,
+                                           abort_command=self.abort_btn_pressed)
         self.input_frame.grid(row=1, column=0, sticky='news')
 
         self.output_frame = OutputLabelFrame(self.root)
         self.output_frame.grid(row=1, column=1, sticky='news')
         self.output_frame.create_table()
+
+        self.status_bar = StatusBar(self.root)
+        self.status_bar.grid(row=2, column=0, columnspan=2, sticky='news')
 
     def __del__(self):
         if self.teardown is not None:
@@ -58,6 +62,10 @@ class Application:
             print('user inputs not filled out')
             return
 
+        self.status_bar.datetime()
+        self.status_bar.executing('Running test sequence')
+        self.status_bar.status('Pass')
+
         self.test_sequence.reset()
         self.input_frame.disable()
         self.output_frame.clear()
@@ -75,6 +83,8 @@ class Application:
             result = self.test_sequence.run_test()
             if result.get('save_column_header') is not None:
                 self.output_frame.add_to_table(result.get('save_column_header'), result.get('value'))
+            if result.get('pass') is False:
+                self.status_bar.status('Fail')
 
             # continue adding the next test sequence for
             # as long as the test is not completed
@@ -86,6 +96,8 @@ class Application:
                 self.input_frame.clear_entries()
                 self.test_sequence.reset()
                 self.input_frame.enable()
+
+                self.status_bar.executing('Test complete')
         else:
             self.teardown()
             self.input_frame.enable()

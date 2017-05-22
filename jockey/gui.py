@@ -1,4 +1,5 @@
 import tkinter as tk
+import datetime
 import tk_tools
 
 
@@ -133,12 +134,46 @@ class OutputLabelFrame(UserLabelFrame):
         self.widgets = [w for w in self.widgets if isinstance(w, tk_tools.LabelGrid)]
 
 
+class StatusBar(tk.Frame):
+    def __init__(self, parent):
+        self.parent = parent
+        tk.Frame.__init__(self, self.parent)
+
+        self.executing_label = tk.Label(self, text='Idle', font='Ariel 10 bold')
+        self.executing_label.pack(side='left', expand=True, fill=tk.X)
+
+        self.status_label = tk.Label(self, text='Idle', font='Ariel 12 bold')
+        self.status_label.pack(side='left', expand=True, fill=tk.X)
+
+        self.datetime_label = tk.Label(self, text='-', font='Ariel 10 bold')
+        self.datetime_label.pack(side='left', expand=True, fill=tk.X)
+
+        self.default_fg_color = self.status_label.cget('foreground')
+
+    def executing(self, text: str):
+        self.executing_label['text'] = text
+
+    def status(self, text: str):
+        if text.lower() in ['fail', 'f']:
+            self.status_label['foreground'] = 'red'
+        elif text.lower() in ['pass', 'p']:
+            self.status_label['foreground'] = 'green'
+        else:
+            self.status_label['foreground'] = self.default_fg_color
+
+        self.status_label['text'] = text
+
+    def datetime(self):
+        dt = datetime.datetime.now()
+        dt_str = datetime.datetime.strftime(dt, '%Y-%m-%d %H:%M')
+        self.datetime_label['text'] = dt_str
+
+        return dt_str
+
 if __name__ == '__main__':
     root = tk.Tk()
 
-    ilf = InputLabelFrame(root)
+    ilf = StatusBar(root)
     ilf.grid()
-
-    ilf.add_entries(['serial number', 'fun with cats', 'something else'])
 
     root.mainloop()
