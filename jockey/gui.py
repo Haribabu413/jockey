@@ -147,13 +147,13 @@ class StatusBar(tk.Frame):
         self.parent = parent
         tk.Frame.__init__(self, self.parent)
 
-        self.executing_label = tk.Label(self, text='Idle', font='Ariel 10 bold')
+        self.executing_label = tk.Label(self, text='Idle', font='Ariel 10 bold', relief=tk.SUNKEN)
         self.executing_label.pack(side='left', expand=True, fill=tk.X)
 
-        self.status_label = tk.Label(self, text='Idle', font='Ariel 12 bold')
+        self.status_label = tk.Label(self, text='Idle', font='Ariel 12 bold', relief=tk.SUNKEN)
         self.status_label.pack(side='left', expand=True, fill=tk.X)
 
-        self.datetime_label = tk.Label(self, text='-', font='Ariel 10 bold')
+        self.datetime_label = tk.Label(self, text='-', font='Ariel 10 bold', relief=tk.SUNKEN)
         self.datetime_label.pack(side='left', expand=True, fill=tk.X)
 
         self.default_fg_color = self.status_label.cget('foreground')
