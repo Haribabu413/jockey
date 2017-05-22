@@ -137,6 +137,8 @@ class Application:
             if result.get('pass') is False:
                 test_passed = False
 
+        if test_passed:
+            self.status_bar.status('Pass')
         data['pass'] = test_passed
 
         save(data, self.save_path)

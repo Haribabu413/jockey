@@ -60,11 +60,17 @@ class InputLabelFrame(UserLabelFrame):
         self.parent = parent
         UserLabelFrame.__init__(self, self.parent, text='Input')
 
+        abort_img = os.path.join(os.path.abspath(__file__), '../img/btn-abort.png')
+        self.abort_image = tk.PhotoImage(file=abort_img).subsample(2)
+
+        start_img = os.path.join(os.path.abspath(__file__), '../img/btn-start.png')
+        self.start_image = tk.PhotoImage(file=start_img).subsample(2)
+
         btn_font = ('Courier New', 14, 'bold')
-        self.abort_button = tk.Button(self, text='Abort', command=abort_command, foreground='red', font=btn_font)
+        self.abort_button = tk.Button(self, image=self.abort_image, command=abort_command, foreground='red', font=btn_font)
         self.add_widget(self.abort_button)
 
-        self.start_button = tk.Button(self, text='Start', command=start_command, foreground='green', font=btn_font)
+        self.start_button = tk.Button(self, text='start', image=self.start_image, command=start_command, foreground='green', font=btn_font)
         self.add_widget(self.start_button)
 
         if entries is not None:
