@@ -1,5 +1,6 @@
 import tkinter as tk
 import time
+import os
 from collections import OrderedDict
 
 from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
@@ -38,6 +39,9 @@ class Application:
 
         self.status_bar = StatusBar(self.root)
         self.status_bar.grid(row=2, column=0, columnspan=2, sticky='news')
+
+        icon_path = os.path.join(os.path.abspath(__file__), '../../img/jockey.ico')
+        self.root.iconbitmap(icon_path)
 
     def __del__(self):
         if self.teardown is not None:
