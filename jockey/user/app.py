@@ -1,10 +1,14 @@
 import tkinter as tk
 import time
 import os
+import logging
 from collections import OrderedDict
 
 from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
 from jockey.util import TestSequence, save
+
+
+logger = logging.getLogger()
 
 
 class Application:

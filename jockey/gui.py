@@ -60,22 +60,26 @@ class InputLabelFrame(UserLabelFrame):
         self.parent = parent
         UserLabelFrame.__init__(self, self.parent, text='Input')
 
+        self.start_command = start_command
+
+        # create the images and image items for the buttons
         abort_img = os.path.join(os.path.abspath(__file__), '../img/btn-abort.png')
         self.abort_image = tk.PhotoImage(file=abort_img).subsample(2)
 
         start_img = os.path.join(os.path.abspath(__file__), '../img/btn-start.png')
         self.start_image = tk.PhotoImage(file=start_img).subsample(2)
 
-        btn_font = ('Courier New', 14, 'bold')
-        self.abort_button = tk.Button(self, image=self.abort_image, command=abort_command, foreground='red', font=btn_font)
+        # create the buttons
+        self.abort_button = tk.Button(self, image=self.abort_image, command=abort_command)
         self.add_widget(self.abort_button)
 
-        self.start_button = tk.Button(self, text='start', image=self.start_image, command=start_command, foreground='green', font=btn_font)
+        self.start_button = tk.Button(self, image=self.start_image, command=self.start_command)
         self.add_widget(self.start_button)
 
         if entries is not None:
-            self.inputs = tk_tools.KeyValueEntry(self, keys=entries)
+            self.inputs = tk_tools.KeyValueEntry(self, keys=entries, on_change_callback=self.start_command)
             self.add_widget(self.inputs)
+
         else:
             self.inputs = None
 
@@ -102,7 +106,7 @@ class InputLabelFrame(UserLabelFrame):
             print('warning: there is already one instance of key: value entries in the input frame')
             return
 
-        self.inputs = tk_tools.KeyValueEntry(self, keys=entries)
+        self.inputs = tk_tools.KeyValueEntry(self, keys=entries, on_change_callback=self.start_command)
         self.add_widget(self.inputs)
 
     def get_user_inputs(self):
