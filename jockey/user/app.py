@@ -8,7 +8,7 @@ from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
 from jockey.util import TestSequence, save
 
 
-logger = logging.getLogger()
+logger = logging.getLogger('jockey.user.app')
 
 
 class Application:
@@ -65,9 +65,9 @@ class Application:
         self.test_sequence.add_test(callback, args)
 
     def start_btn_pressed(self):
-        print('-------------')
+        logger.info('beginning test sequence')
         if not self.user_inputs_filled:
-            print('user inputs not filled out')
+            logger.warning('user inputs are not filled in')
             return
 
         self.status_bar.datetime()
@@ -84,6 +84,7 @@ class Application:
 
     def abort_btn_pressed(self):
         print('!!! ABORTED !!!')
+        logger.warning('test sequence ABORTED')
         self.aborted = True
 
     def run_test(self):
@@ -109,11 +110,13 @@ class Application:
                 self.input_frame.enable()
 
                 self.status_bar.executing('Test complete')
+                logger.info('test sequence complete')
         else:
             self.teardown()
             self.input_frame.enable()
 
     def wait(self, wait_time):
+        logger.info('waiting {}'.format(wait_time))
         increment = 0.1
         total = 0.0
         while total < wait_time:
@@ -153,6 +156,10 @@ class Application:
 
         if test_passed:
             self.status_bar.status('Pass')
+            logger.info('~~~ PASS ~~~')
+        else:
+            logger.info('!!! FAIL !!!')
+
         data['pass'] = test_passed
 
         save(data, self.save_path)

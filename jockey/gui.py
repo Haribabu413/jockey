@@ -1,7 +1,10 @@
 import tkinter as tk
 import os
 import datetime
+import logging
 import tk_tools
+
+logger = logging.getLogger('jockey.gui')
 
 
 class HeaderFrame(tk.Frame):
@@ -31,8 +34,10 @@ class UserLabelFrame(tk.LabelFrame):
 
     def add_widget(self, widget: tk.Widget, index: int=None):
         if index is None:
+            logger.debug('adding widget {}'.format(widget))
             self.widgets.append(widget)
         else:
+            logger.debug('adding widget {} at index {}'.format(widget, index))
             self.widgets.insert(index, widget)
 
         for widget in self.widgets:

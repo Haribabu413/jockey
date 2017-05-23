@@ -1,5 +1,8 @@
+import logging
 from subdue import daqmx
 from jockey.util import apply_limits
+
+logger = logging.getLogger('jockey.hardware')
 
 
 def _parse_daq_string(daq_string):
@@ -46,7 +49,6 @@ def _append_limits(result_dict, min_value, max_value, pass_if):
 def write_daq(output, device=None, serial_number=None, model=None,
               voltage=None, state=None,
               save=False, save_column_header=None):
-    print('writing to {}: {}/{}'.format(device, output, voltage, state))
 
     daq_str, port_str, pin_str = _parse_daq_string(output)
     daq = _get_daq_hardware(device, serial_number, model)
@@ -54,10 +56,12 @@ def write_daq(output, device=None, serial_number=None, model=None,
 
     result = {'save': save, 'save_column_header': save_column_header, 'device': output}
     if 'ao' in line:
+        logger.info('writing to {}/{}: {}'.format(device, output, voltage))
         daq.analog_out(line, voltage)
         result['value'] = voltage
 
     elif 'port' in line and 'line' in line:
+        logger.info('writing to {}/{}: {}'.format(device, output, state))
         daq.digital_out_line(port_str, pin_str, state)
         result['value'] = state
     else:
@@ -83,12 +87,15 @@ def read_daq(input, device=None, serial_number=None, model=None,
         samples = daq.sample_analog_in(line, sample_count=num_of_points, rate=sample_rate)
         avg = sum(samples) / len(samples)
         value = round(avg, 2)
+        logger.info('read from {}/{}: {}V'.format(device, input, value))
 
         result['value'] = value
         result['pass'] = apply_limits(result['value'], min_value, max_value, pass_if)
 
     elif 'port' in line and 'line' in line:
         value = daq.digital_in_line(port_str, pin_str)
+        logger.info('read from {}/{}: {}V'.format(device, input, value))
+
         result['value'] = value
         result['pass'] = apply_limits(result['value'], min_value, max_value, pass_if)
 

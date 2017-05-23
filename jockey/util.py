@@ -1,15 +1,22 @@
+import logging
 
-def apply_limits(value, min_value: float=None, max_value: float=None, pass_if: bool=None):
+logger = logging.getLogger('jockey.util')
+
+
+def apply_limits(value, min_value: float=None, max_value: float=None, pass_if: (bool, str, int)=None):
     if min_value:
         if value < min_value:
+            logger.warning('value of {} is less than the required minimum {}'.format(value, min_value))
             return False
 
     if max_value:
         if value > max_value:
+            logger.warning('value of {} is greater than the required maximum {}'.format(value, max_value))
             return False
 
     if pass_if:
         if value != pass_if:
+            logger.warning('value of {} is not the required value of {}'.format(value, pass_if))
             return False
 
     return True
@@ -46,15 +53,17 @@ class TestSequence:
             return False
 
     def add_test(self, test, args: tuple=None):
+        logger.debug('adding test "{}({}) to sequence"'.format(test, args))
         self.sequence.append(test)
         self.args.append(args)
 
     def run_test(self):
+        logger.debug('executing sequence {} of {}'.format(self.sequence_index, len(self.sequence)))
         try:
             test_function = self.sequence[self.sequence_index]
             test_args = self.args[self.sequence_index]
         except IndexError:
-            print('!!! test needs to be reset !!!')
+            logger.warning('test reset required')
             return None
 
         if test_args is not None:
@@ -77,11 +86,14 @@ class TestSequence:
         return results
 
     def reset(self):
+        logger.info('test sequence reset')
         self.sequence_index = 0
         self.results = list()
 
 
 def save(data: dict, file_path: str, delimiter='\t'):
+    logger.info('saving data point {} to {} using the "{}" delimiter'.format(data, file_path, delimiter))
+
     header = delimiter.join(data.keys()) + '\n'
 
     # determine if the header is present and - if not - then print a new header in the file
@@ -96,8 +108,12 @@ def save(data: dict, file_path: str, delimiter='\t'):
     # append the data to the data file
     with open(file_path, 'a') as f:
         if not header_present:
+            logger.debug('proper column headers not found, creating')
             f.write(header)
+        else:
+            logger.debug('found correct column headers')
 
+        logger.debug('writing data point: {}'.format(data))
         data = delimiter.join([str(v) for _, v in data.items()]) + '\n'
         f.write(data)
 
