@@ -63,7 +63,7 @@ class UserLabelFrame(tk.LabelFrame):
 class InputLabelFrame(UserLabelFrame):
     def __init__(self, parent, start_command=None, abort_command=None, entries: list=None):
         self.parent = parent
-        UserLabelFrame.__init__(self, self.parent, text='Input')
+        UserLabelFrame.__init__(self, self.parent, text='User Inputs')
 
         self.start_command = start_command
 
@@ -124,7 +124,7 @@ class InputLabelFrame(UserLabelFrame):
 class OutputLabelFrame(UserLabelFrame):
     def __init__(self, parent):
         self.parent = parent
-        UserLabelFrame.__init__(self, self.parent, text='Output')
+        UserLabelFrame.__init__(self, self.parent, text='Test Outputs')
 
     def create_table(self, headers=None):
         table = tk_tools.LabelGrid(self, 3, headers=headers)
