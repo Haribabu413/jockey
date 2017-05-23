@@ -1,1 +1,1 @@
-include jockey/img/*
+recursive-include jockey/img *
