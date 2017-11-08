@@ -1,11 +1,11 @@
 import tkinter as tk
 import time
-import os
 import logging
 from collections import OrderedDict
 
 from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
 from jockey.util import TestSequence, save
+from jockey.images import logo_icon
 
 
 logger = logging.getLogger('jockey.user.app')
@@ -43,8 +43,8 @@ class Application(tk.Tk):
         self.status_bar = StatusBar(self)
         self.status_bar.grid(row=2, column=0, columnspan=2, sticky='news')
 
-        icon_path = os.path.join(os.path.abspath(__file__), '../../img/jockey.ico')
-        self.iconbitmap(icon_path)
+        icon = tk.PhotoImage(data=logo_icon)
+        self.tk.call('wm', 'iconphoto', self._w, icon)
 
         self.title(title)
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
+from stringify import stringify_py
 import os
 
 # provide correct path for version
@@ -13,8 +14,14 @@ requirements = [
     "tk_tools"
 ]
 
+setup_requires = [
+    'stringify'
+]
+
 with open('readme.md', 'r') as f:
     long_description = f.read()
+
+stringify_py(source_path='images/app', destination_file='jockey/images.py')
 
 setup(
     name='jockey',
@@ -29,5 +36,6 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=requirements,
+    setup_requires=setup_requires,
     zip_safe=False
 )

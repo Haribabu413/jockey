@@ -4,6 +4,8 @@ import datetime
 import logging
 import tk_tools
 
+from jockey.images import btn_start, btn_abort
+
 logger = logging.getLogger('jockey.gui')
 
 
@@ -66,11 +68,8 @@ class InputLabelFrame(UserLabelFrame):
         self.start_command = start_command
 
         # create the images and image items for the buttons
-        abort_img = os.path.join(os.path.abspath(__file__), '../img/btn-abort.png')
-        self.abort_image = tk.PhotoImage(file=abort_img).subsample(2)
-
-        start_img = os.path.join(os.path.abspath(__file__), '../img/btn-start.png')
-        self.start_image = tk.PhotoImage(file=start_img).subsample(2)
+        self.abort_image = tk.PhotoImage(data=btn_abort).subsample(2)
+        self.start_image = tk.PhotoImage(data=btn_start).subsample(2)
 
         # create the buttons
         self.abort_button = tk.Button(self, image=self.abort_image, command=abort_command)
