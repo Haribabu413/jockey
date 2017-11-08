@@ -4,7 +4,7 @@ DO NOT CHANGE THE IMPORT
 from jockey import *
 
 # creates an instance of the Application
-app = Application(title=('Jockey Application', 'v0.0.0'), save_path='save.csv')
+app = Application(title='Sample Jockey Application', subtitle=__version__, save_path='save.csv')
 
 
 def setup():
@@ -18,10 +18,12 @@ def setup():
     """
     write_daq(device='Dev1', output='ao/0', voltage=0)  # set an initial condition
 
-    app.add_input_label('my text')  # this is how you might add custom labeling to the inputs
-    app.add_input_label('more text')  # another customer label
+    app.add_input_label('Some custom text!')  # this is how you might add custom labeling to the inputs
+    app.add_input_label('test v1.2')  # this is how you might add custom labeling to the inputs
 
-    app.add_user_inputs(['serial number'])  # this is how you would add user input values
+    app.add_user_inputs('serial number')  # this is how you would add user input values
+
+    app.add_input_label('add more text if you want')  # this is how you might add custom labeling to the inputs
 
 
 def test():

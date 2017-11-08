@@ -8,19 +8,17 @@ logger = logging.getLogger('jockey.gui')
 
 
 class HeaderFrame(tk.Frame):
-    def __init__(self, parent, title: (tuple, str)=None):
+    def __init__(self, parent, title: str=None, subtitle: str=None):
         self.parent = parent
         tk.Frame.__init__(self, self.parent)
 
         if title is not None:
-            if isinstance(title, str):
-                self.title = tk.Label(self, text=title, font=("Helvetica", 18))
-                self.title.pack(expand=True)
-            elif isinstance(title, tuple):
-                self.title = tk.Label(self, text=title[0], font=("Helvetica", 18))
-                self.title.pack(expand=True)
-                self.subtitle = tk.Label(self, text=title[1], font=("Helvetica", 12))
-                self.subtitle.pack(expand=True)
+            self.title = tk.Label(self, text=title, font=("Helvetica", 18))
+            self.title.pack(expand=True)
+
+        if subtitle is not None:
+            self.subtitle = tk.Label(self, text=subtitle, font=("Helvetica", 12))
+            self.subtitle.pack(expand=True)
 
         # todo: implement logo
 

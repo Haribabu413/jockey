@@ -11,41 +11,42 @@ from jockey.util import TestSequence, save
 logger = logging.getLogger('jockey.user.app')
 
 
-class Application:
-    def __init__(self, title: (tuple, str), save_path: str='results.txt'):
+class Application(tk.Tk):
+    def __init__(self, title: str, subtitle: str=None, save_path: str='results.txt'):
+        super().__init__()
+
         # initialize the test sequences
         self.test_sequence = TestSequence()
         self.teardown = None
         self.save_path = save_path
         self.aborted = False
 
-        # start the GUI
-        self.root = tk.Tk()
-
         # allow the GUI to stretch
-        tk.Grid.columnconfigure(self.root, 0, weight=1)
-        tk.Grid.columnconfigure(self.root, 1, weight=1)
-        tk.Grid.rowconfigure(self.root, 0, weight=1)
-        tk.Grid.rowconfigure(self.root, 1, weight=1)
+        tk.Grid.columnconfigure(self, 0, weight=1)
+        tk.Grid.columnconfigure(self, 1, weight=1)
+        tk.Grid.rowconfigure(self, 0, weight=1)
+        tk.Grid.rowconfigure(self, 1, weight=1)
 
         # create the base GUI frame elements
-        self.header_frame = HeaderFrame(self.root, title=title)
+        self.header_frame = HeaderFrame(self, title=title, subtitle=subtitle)
         self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
 
-        self.input_frame = InputLabelFrame(self.root,
+        self.input_frame = InputLabelFrame(self,
                                            start_command=self.start_btn_pressed,
                                            abort_command=self.abort_btn_pressed)
         self.input_frame.grid(row=1, column=0, sticky='news')
 
-        self.output_frame = OutputLabelFrame(self.root)
+        self.output_frame = OutputLabelFrame(self)
         self.output_frame.grid(row=1, column=1, sticky='news')
         self.output_frame.create_table()
 
-        self.status_bar = StatusBar(self.root)
+        self.status_bar = StatusBar(self)
         self.status_bar.grid(row=2, column=0, columnspan=2, sticky='news')
 
         icon_path = os.path.join(os.path.abspath(__file__), '../../img/jockey.ico')
-        self.root.iconbitmap(icon_path)
+        self.iconbitmap(icon_path)
+
+        self.title(title)
 
     def __del__(self):
         if self.teardown is not None:
@@ -59,7 +60,7 @@ class Application:
 
     def run(self):
         # application NEVER comes out of this !!!
-        self.root.mainloop()
+        self.mainloop()
 
     def add_test(self, callback, args):
         self.test_sequence.add_test(callback, args)
@@ -80,7 +81,7 @@ class Application:
         self.aborted = False
 
         # allow time for the button to disable before beginning the test sequence
-        self.root.after(150, self.run_test)
+        self.after(150, self.run_test)
 
     def abort_btn_pressed(self):
         print('!!! ABORTED !!!')
@@ -101,7 +102,7 @@ class Application:
             # continue adding the next test sequence for
             # as long as the test is not completed
             if not self.test_sequence.complete:
-                self.root.after(100, self.run_test)
+                self.after(100, self.run_test)
             else:
                 self.teardown()
                 self.process_results()
@@ -122,7 +123,7 @@ class Application:
         while total < wait_time:
             time.sleep(increment)
             total += increment
-            self.root.update()
+            self.update()
 
             if self.aborted:
                 break
