@@ -1,12 +1,15 @@
-import tkinter as tk
-import time
+"""
+Primary application is intialized from here.
+"""
+
 import logging
+import time
+import tkinter as tk
 from collections import OrderedDict
 
-from jockey.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
-from jockey.util import TestSequence, save
 from jockey.images import logo_icon
-
+from jockey.user.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
+from jockey.util import TestSequence, save
 
 logger = logging.getLogger('jockey.user.app')
 

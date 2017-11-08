@@ -1,3 +1,9 @@
+"""
+Used to provide the scripting hardware interface for the
+user.  Each of the functions within this are intended to
+be utilized within the user script.
+"""
+
 import jockey.hardware
 
 

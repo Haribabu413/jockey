@@ -1,3 +1,9 @@
+"""
+This file provides a convenient interface
+for writing and reading to and from the
+hardware.
+"""
+
 import logging
 from subdue import daqmx
 from jockey.util import apply_limits
