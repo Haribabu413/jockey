@@ -192,7 +192,7 @@ class StatusBar(tk.Frame):
 
     def datetime(self):
         dt = datetime.datetime.now()
-        dt_str = datetime.datetime.strftime(dt, '%Y-%m-%d %H:%M')
+        dt_str = datetime.datetime.strftime(dt, '%Y-%m-%d %H:%M:%S')
         self.datetime_label['text'] = dt_str
 
         return dt_str
