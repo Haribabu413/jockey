@@ -1,3 +1,0 @@
-[console_scripts]
-subdue = subdue.__main__:main
-
