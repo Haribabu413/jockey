@@ -167,8 +167,11 @@ class Application:
     def add_input_label(self, text, index: int=None):
         self.input_frame.add_label(text, index)
 
-    def add_user_inputs(self, input_labels: list):
-        self.input_frame.add_entries(input_labels)
+    def add_user_inputs(self, input_labels: (list, str)):
+        if isinstance(input_labels, list):
+            self.input_frame.add_entries(input_labels)
+        else:
+            self.input_frame.add_entries([input_labels])
 
     @property
     def user_inputs_filled(self):
