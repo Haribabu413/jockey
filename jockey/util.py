@@ -1,3 +1,8 @@
+"""
+Generic test utilities, such as saving
+data, executing the test sequence, etc.
+"""
+
 import logging
 
 logger = logging.getLogger(__name__)
