@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
+import os
 
+# provide correct path for version
+__version__ = None
+here = os.path.dirname(os.path.dirname(__file__))
+exec(open(os.path.join(here, 'jockey/version.py')).read())
 
 requirements = [
     "subdue >= 0.1.6",
@@ -13,7 +18,7 @@ with open('readme.md', 'r') as f:
 
 setup(
     name='jockey',
-    version='v0.0.1',
+    version=__version__,
     description='Easy creation of hardware-oriented tests',
     long_description=long_description,
     author='Jason R. Jones',
