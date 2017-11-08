@@ -11,7 +11,7 @@ from jockey.images import logo_icon
 from jockey.user.gui import HeaderFrame, InputLabelFrame, OutputLabelFrame, StatusBar
 from jockey.util import TestSequence, save
 
-logger = logging.getLogger('jockey.user.app')
+logger = logging.getLogger(__name__)
 
 
 class Application(tk.Tk):

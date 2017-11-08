@@ -4,7 +4,11 @@ user.  Each of the functions within this are intended to
 be utilized within the user script.
 """
 
+import logging
 import jockey.hardware
+
+
+logger = logging.getLogger(__name__)
 
 
 def write_daq(output, device=None, serial_number=None, model=None,

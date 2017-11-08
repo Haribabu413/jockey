@@ -8,7 +8,7 @@ import logging
 from subdue import daqmx
 from jockey.util import apply_limits
 
-logger = logging.getLogger('jockey.hardware')
+logger = logging.getLogger(__name__)
 
 
 def _parse_daq_string(daq_string):

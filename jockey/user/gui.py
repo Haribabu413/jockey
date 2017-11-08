@@ -1,12 +1,11 @@
 import tkinter as tk
-import os
 import datetime
 import logging
 import tk_tools
 
 from jockey.images import btn_start, btn_abort
 
-logger = logging.getLogger('jockey.gui')
+logger = logging.getLogger(__name__)
 
 
 class HeaderFrame(tk.Frame):

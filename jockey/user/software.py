@@ -4,7 +4,10 @@ for use within the user script and each will
 generally perform some action that is noticable
 by a user from the GUI
 """
+import logging
 from jockey.user.app import Application
+
+logger = logging.getLogger(__name__)
 
 
 def add_input_label(text, app: Application):

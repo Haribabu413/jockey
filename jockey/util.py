@@ -1,6 +1,6 @@
 import logging
 
-logger = logging.getLogger('jockey.util')
+logger = logging.getLogger(__name__)
 
 
 def apply_limits(value, min_value: float=None, max_value: float=None, pass_if: (bool, str, int)=None):
