@@ -1,6 +1,7 @@
 *.idea/
 *.cache/
-subdue.egg-info/
+jockey.egg-info/
 *__pycache__/
 build/
 dist/
+examples/save.csv
