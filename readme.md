@@ -2,7 +2,7 @@
 
 To allow script-like creation of GUI elements which will create a GUI complete with user controls along with a complete test and test sequence with a minimum of effort.
 
-![screenshot - pass](images/screenshot-pass.png)
+![screenshot - pass](docs/images/screenshot-pass.png)
 
 # Contributions
 
