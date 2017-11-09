@@ -32,7 +32,7 @@ class Application(tk.Tk):
 
         # create the base GUI frame elements
         self.header_frame = HeaderFrame(self, title=title, subtitle=subtitle)
-        self.header_frame.grid(row=0, column=0, columnspan=2, sticky='news')
+        self.header_frame.grid(row=0, column=0, columnspan=2, sticky='ew')
 
         self.input_frame = InputLabelFrame(self,
                                            start_command=self.start_btn_pressed,
@@ -87,7 +87,6 @@ class Application(tk.Tk):
         self.after(150, self.run_test)
 
     def abort_btn_pressed(self):
-        print('!!! ABORTED !!!')
         logger.warning('test sequence ABORTED')
         self.aborted = True
 
@@ -101,6 +100,7 @@ class Application(tk.Tk):
                                                status)
             if result.get('pass') is False:
                 self.status_bar.status('Fail')
+                self.output_frame.to_fail()
 
             # continue adding the next test sequence for
             # as long as the test is not completed
@@ -118,6 +118,7 @@ class Application(tk.Tk):
         else:
             self.teardown()
             self.input_frame.enable()
+            self.output_frame.to_fail()
 
     def wait(self, wait_time):
         logger.info('waiting {}'.format(wait_time))
@@ -157,6 +158,11 @@ class Application(tk.Tk):
 
             if result.get('pass') is False:
                 test_passed = False
+
+        if test_passed:
+            self.output_frame.to_pass()
+        else:
+            self.output_frame.to_fail()
 
         if test_passed:
             self.status_bar.status('Pass')

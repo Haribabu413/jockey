@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class HeaderFrame(tk.Frame):
     def __init__(self, parent, title: str=None, subtitle: str=None):
         self.parent = parent
-        tk.Frame.__init__(self, self.parent)
+        super().__init__(self.parent)
 
         if title is not None:
             self.title = tk.Label(self, text=title, font=("Helvetica", 18))
@@ -27,7 +27,7 @@ class HeaderFrame(tk.Frame):
 class UserLabelFrame(tk.LabelFrame):
     def __init__(self, parent, text):
         self.parent = parent
-        tk.LabelFrame.__init__(self, self.parent, text=text)
+        super().__init__(self.parent, text=text)
 
         self.widgets = list()
 
@@ -62,7 +62,7 @@ class UserLabelFrame(tk.LabelFrame):
 class InputLabelFrame(UserLabelFrame):
     def __init__(self, parent, start_command=None, abort_command=None, entries: list=None):
         self.parent = parent
-        UserLabelFrame.__init__(self, self.parent, text='User Inputs')
+        super().__init__(self.parent, text='User Inputs')
 
         self.start_command = start_command
 
@@ -120,10 +120,15 @@ class InputLabelFrame(UserLabelFrame):
 class OutputLabelFrame(UserLabelFrame):
     def __init__(self, parent):
         self.parent = parent
-        UserLabelFrame.__init__(self, self.parent, text='Test Outputs')
+        super().__init__(self.parent, text='Test Outputs')
 
-        #self.led = tk_tools.Led(self)
-        #self.add_widget(self.led)
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+
+        self.led = tk_tools.Led(self)
+        self.led.to_green()
+        self.led.grid(row=1, column=0, sticky='s')
 
     def create_table(self, headers=None):
         table = tk_tools.LabelGrid(self, 3, headers=headers)
@@ -140,6 +145,8 @@ class OutputLabelFrame(UserLabelFrame):
             table.add_row([label, value, status])
 
     def clear(self):
+        self.led.to_yellow(True)
+
         for widget in self.widgets:
             if not isinstance(widget, tk_tools.LabelGrid):
                 widget.grid_forget()
@@ -149,20 +156,30 @@ class OutputLabelFrame(UserLabelFrame):
 
         self.widgets = [w for w in self.widgets if isinstance(w, tk_tools.LabelGrid)]
 
+    def to_pass(self):
+        self.led.to_green(True)
+
+    def to_fail(self):
+        self.led.to_red(True)
+
 
 class StatusBar(tk.Frame):
     def __init__(self, parent):
         self.parent = parent
-        tk.Frame.__init__(self, self.parent)
+        super().__init__(self.parent)
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
 
         self.executing_label = tk.Label(self, text='Idle', font='Ariel 10 bold', relief=tk.SUNKEN)
-        self.executing_label.grid(row=0, column=0, sticky='ew')
+        self.executing_label.grid(row=0, column=0, sticky='news')
 
         self.status_label = tk.Label(self, text='Idle', font='Ariel 12 bold', relief=tk.SUNKEN)
-        self.status_label.grid(row=0, column=1, sticky='ew')
+        self.status_label.grid(row=0, column=1, sticky='news')
 
         self.datetime_label = tk.Label(self, text='-', font='Ariel 10 bold', relief=tk.SUNKEN)
-        self.datetime_label.grid(row=0, column=2, sticky='ew')
+        self.datetime_label.grid(row=0, column=2, sticky='news')
 
         self.default_fg_color = self.status_label.cget('foreground')
         self.default_bg_color = self.status_label.cget('background')
