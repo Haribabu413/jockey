@@ -15,11 +15,11 @@ class HeaderFrame(tk.Frame):
 
         if title is not None:
             self.title = tk.Label(self, text=title, font=("Helvetica", 18))
-            self.title.pack(expand=True)
+            self.title.grid(sticky='ew')
 
         if subtitle is not None:
             self.subtitle = tk.Label(self, text=subtitle, font=("Helvetica", 12))
-            self.subtitle.pack(expand=True)
+            self.subtitle.grid(sticky='ew')
 
         # todo: implement logo
 
@@ -39,9 +39,9 @@ class UserLabelFrame(tk.LabelFrame):
             logger.debug('adding widget {} at index {}'.format(widget, index))
             self.widgets.insert(index, widget)
 
-        for widget in self.widgets:
-            widget.pack_forget()
-            widget.pack(fill='x')
+        for i, widget in enumerate(self.widgets):
+            widget.grid_forget()
+            widget.grid(row=i, sticky='ew')
 
     def add_label(self, text, index: int=None):
         label = tk.Label(self, text=text)
@@ -53,7 +53,7 @@ class UserLabelFrame(tk.LabelFrame):
 
     def clear(self):
         for widget in self.widgets:
-            widget.pack_forget()
+            widget.grid_forget()
             widget.destroy()
 
         self.widgets = list()
@@ -92,9 +92,9 @@ class InputLabelFrame(UserLabelFrame):
         else:
             self.widgets.insert(index, widget)
 
-        for widget in self.widgets:
-            widget.pack_forget()
-            widget.pack(fill='x')
+        for i, widget in enumerate(self.widgets):
+            widget.grid_forget()
+            widget.grid(row=i, sticky='ew')
 
     def enable(self):
         self.start_button['state'] = 'normal'
@@ -122,6 +122,9 @@ class OutputLabelFrame(UserLabelFrame):
         self.parent = parent
         UserLabelFrame.__init__(self, self.parent, text='Test Outputs')
 
+        #self.led = tk_tools.Led(self)
+        #self.add_widget(self.led)
+
     def create_table(self, headers=None):
         table = tk_tools.LabelGrid(self, 3, headers=headers)
         self.add_widget(table)
@@ -139,7 +142,7 @@ class OutputLabelFrame(UserLabelFrame):
     def clear(self):
         for widget in self.widgets:
             if not isinstance(widget, tk_tools.LabelGrid):
-                widget.pack_forget()
+                widget.grid_forget()
                 widget.destroy()
             else:
                 widget.clear()
@@ -153,13 +156,13 @@ class StatusBar(tk.Frame):
         tk.Frame.__init__(self, self.parent)
 
         self.executing_label = tk.Label(self, text='Idle', font='Ariel 10 bold', relief=tk.SUNKEN)
-        self.executing_label.pack(side='left', expand=True, fill=tk.X)
+        self.executing_label.grid(row=0, column=0, sticky='ew')
 
         self.status_label = tk.Label(self, text='Idle', font='Ariel 12 bold', relief=tk.SUNKEN)
-        self.status_label.pack(side='left', expand=True, fill=tk.X)
+        self.status_label.grid(row=0, column=1, sticky='ew')
 
         self.datetime_label = tk.Label(self, text='-', font='Ariel 10 bold', relief=tk.SUNKEN)
-        self.datetime_label.pack(side='left', expand=True, fill=tk.X)
+        self.datetime_label.grid(row=0, column=2, sticky='ew')
 
         self.default_fg_color = self.status_label.cget('foreground')
         self.default_bg_color = self.status_label.cget('background')
@@ -192,6 +195,7 @@ class StatusBar(tk.Frame):
         self.datetime_label['text'] = dt_str
 
         return dt_str
+
 
 if __name__ == '__main__':
     root = tk.Tk()
